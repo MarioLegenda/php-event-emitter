@@ -30,6 +30,32 @@ class EventEmitterTest extends TestCase
         static::assertTrue($calledSecondTime);
     }
 
+    public function testBasicEventEmitterWithMultipleArguments()
+    {
+        $eventEmitter = new EventEmitter();
+        $eventCalled = false;
+        $calledSecondTime = false;
+
+        $eventEmitter->emit('event', 10, 20, 30);
+
+        $eventEmitter
+            ->on('event', function($val1, $val2, $val3) use (&$eventCalled) {
+                static::assertEquals(10, $val1);
+                static::assertEquals(20, $val2);
+                static::assertEquals(30, $val3);
+                $eventCalled = true;
+            })
+            ->on('event', function($val1, $val2, $val3) use (&$calledSecondTime) {
+                static::assertEquals(10, $val1);
+                static::assertEquals(20, $val2);
+                static::assertEquals(30, $val3);
+                $calledSecondTime = true;
+            });
+
+        static::assertTrue($eventCalled);
+        static::assertTrue($calledSecondTime);
+    }
+
     public function testBasicEmittingWithCallbackObject()
     {
         $eventEmitter = new EventEmitter();
