@@ -116,4 +116,33 @@ class EventEmitterTest extends TestCase
 
         static::assertTrue($invalidArgumentExceptionCalled);
     }
+
+    public function testEventEmitterExceptionHandling()
+    {
+        $eventEmitter = new EventEmitter(true);
+        $eventCalled = false;
+        $calledSecondTime = false;
+        $exceptionCaught = false;
+
+        $eventEmitter->emit('event', 10);
+        $eventEmitter->emit('event2', 20);
+
+        $eventEmitter
+            ->on('event', function($val) use (&$eventCalled) {
+                $eventCalled = true;
+
+                throw new \RuntimeException('noop');
+            })
+            ->on('event2', function($val) use (&$calledSecondTime) {
+                static::assertEquals(10, $val);
+                $calledSecondTime = true;
+            })
+            ->exception(function(\Throwable $e) use (&$exceptionCaught) {
+                $exceptionCaught = true;
+            });
+
+        static::assertTrue($eventCalled);
+        static::assertFalse($calledSecondTime);
+        static::assertTrue($exceptionCaught);
+    }
 }

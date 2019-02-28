@@ -7,10 +7,22 @@ class EventEmitter {
      * @var EventCollection $listenerCollection
      */
     private $eventCollection;
-
-    public function __construct()
+    /**
+     * @var bool $handleErrors
+     */
+    private $handleErrors;
+    /**
+     * @var \Throwable $internalError
+     */
+    private $internalError;
+    /**
+     * EventEmitter constructor.
+     * @param bool $handleErrors
+     */
+    public function __construct(bool $handleErrors = false)
     {
         $this->eventCollection = new EventCollection();
+        $this->handleErrors = $handleErrors;
     }
     /**
      * @param string $eventName
@@ -19,6 +31,10 @@ class EventEmitter {
      */
     public function on(string $eventName, $callback): EventEmitter
     {
+        if ($this->internalError instanceof \Exception) {
+            return $this;
+        }
+
         if (!$this->eventCollection->has($eventName)) {
             $message = sprintf(
                 'EventEmitter: No event registered with name \'%s\'',
@@ -32,9 +48,28 @@ class EventEmitter {
         $event = $this->eventCollection->get($eventName);
         $event->setCallback($callback);
 
+        if ($this->handleErrors) {
+            try {
+                StaticEventExec::call($event);
+            } catch (\Throwable $exception) {
+                $this->internalError = $exception;
+
+                return $this;
+            }
+        }
+
         StaticEventExec::call($event);
 
         return $this;
+    }
+    /**
+     * @param $callback
+     */
+    public function exception($callback)
+    {
+        $event = new Event('internalError', $this->internalError, $callback);
+
+        StaticEventExec::call($event);
     }
     /**
      * @param string $eventName
