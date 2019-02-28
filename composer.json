@@ -1,7 +1,6 @@
 {
     "name": "mario-legenda/php-event-emitter",
     "description": "EventEmitter port from node to PHP",
-    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "require": {
