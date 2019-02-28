@@ -100,6 +100,73 @@ class EventEmitterTest extends TestCase
         static::assertTrue($callback2->getEventCalled());
     }
 
+    public function testBasicEventEmitterWithCallbackObjectAndMultipleArguments()
+    {
+        $eventEmitter = new EventEmitter();
+        $phpunit = $this;
+
+        $callback1 = new class($phpunit) implements CallbackInterface
+        {
+            private $eventCalled = false;
+
+            private $phpunit;
+
+            public function __construct($phpunit)
+            {
+                $this->phpunit = $phpunit;
+            }
+
+            public function run($first = null, $second = null, $third = null)
+            {
+                $this->phpunit->assertEquals($first, 10);
+                $this->phpunit->assertEquals($second, 20);
+                $this->phpunit->assertEquals($third, 30);
+
+                $this->eventCalled = true;
+            }
+
+            public function getEventCalled(): bool
+            {
+                return $this->eventCalled;
+            }
+        };
+
+        $callback2 = new class($phpunit) implements CallbackInterface
+        {
+            private $eventCalled = false;
+
+            private $phpunit;
+
+            public function __construct($phpunit)
+            {
+                $this->phpunit = $phpunit;
+            }
+
+            public function run($first = null, $second = null, $third = null)
+            {
+                $this->phpunit->assertEquals($first, 10);
+                $this->phpunit->assertEquals($second, 20);
+                $this->phpunit->assertEquals($third, 30);
+
+                $this->eventCalled = true;
+            }
+
+            public function getEventCalled(): bool
+            {
+                return $this->eventCalled;
+            }
+        };
+
+        $eventEmitter->emit('event', 10, 20, 30);
+
+        $eventEmitter
+            ->on('event', $callback1)
+            ->on('event', $callback2);
+
+        static::assertTrue($callback1->getEventCalled());
+        static::assertTrue($callback2->getEventCalled());
+    }
+
     public function testHelperFunctions()
     {
         $eventEmitter = new EventEmitter();
