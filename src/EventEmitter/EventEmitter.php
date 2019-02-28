@@ -70,6 +70,8 @@ class EventEmitter {
         $event = new Event('internalError', $this->internalError, $callback);
 
         StaticEventExec::call($event);
+
+        $this->internalError = null;
     }
     /**
      * @param string $eventName
