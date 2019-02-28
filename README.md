@@ -1,4 +1,4 @@
-##Introduction
+## Introduction
 
 This project is a light port of Nodes [EventEmitter class](https://nodejs.org/api/events.html).
 Although, it does not have all the features that Node EventEmitter has, it has all
@@ -52,9 +52,9 @@ $task
 ```
 
 An alternative to calling EventEmitter::on() with a closure would be to
-create a class that implement the EventEmitter\CallableInterface that exposes
-a single method `run()`. The drawback is that in PHP, we cannot se a variable
-number of parameters for the `run()` method. There for, if you want to use this interface,
+create a class that implements the EventEmitter\CallableInterface that exposes
+a single method `run()`. The drawback is that in PHP, we cannot set a variable
+number of parameters for the `run()` method. Therefor, if you want to use this interface,
 you would have to nullify every one of the arguments that you expect to receive.
 For example...
 
@@ -75,7 +75,7 @@ class Callable implements CallableInterface
 It is possible to chain multiple identical events
 
 ```
-$eventEmitter = new EventEmitter(true); // notice the argument. That means that exceptions will be handled by EventEmitter
+$eventEmitter = new EventEmitter();
 
 $eventEmitter->emit('event', 'some value');
 
@@ -188,7 +188,7 @@ be handled by the EventEmitter. Else, exceptions will be propagated to client co
 
 `EventEmitter::emit(string $eventName, ...args): void`
 
-Registers an event to be called with `EventEmitter::on()`.Must be called before `EventEmitter::on()`.
+Registers an event to be called with `EventEmitter::on()`. Must be called before `EventEmitter::on()`.
 
 `EventEmitter::on(string $eventName, $callback): EventEmitter`
 
@@ -210,4 +210,4 @@ Removes all events.
 
 `EventEmitter::getEventNames(): ?array`
 
-Returns an array of currently registered event names or null if there are none
+Returns an array of currently registered event names or `null` if there are none
