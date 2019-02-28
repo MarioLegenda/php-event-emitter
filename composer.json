@@ -1,0 +1,22 @@
+{
+    "name": "mario-legenda/php-event-emitter",
+    "description": "EventEmitter port from node to PHP",
+    "type": "tool",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mario Skrlec",
+            "email": "likearollingstone199@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "EventEmitter": "src/",
+            "Tests": "tests/"
+        }
+    }
+}
