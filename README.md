@@ -7,6 +7,10 @@ code refactoring.
 
 ## Installation
 
+Supports PHP >7.0
+
+`composer require mario-legenda/php-event-emitter`
+
 #### Usage by extending the EventEmitter class
 
 ```
