@@ -5,7 +5,7 @@ Although, it does not have all the features that Node EventEmitter has, it has a
 that you need to implement the Observer pattern right away in your classes with minimal
 code refactoring.
 
-[NOTE] This is not the observer pattern. I don't know why I wrote that. I did this project in about 4 hours and I was in a hurry. Worry not, it is tested properly.
+[NOTE (a couple of day after I created this)] This is not the observer pattern. I don't know why I wrote that. I did this project in about 4 hours and I was in a hurry. Worry not, it is tested properly.
 
 ## Installation
 
